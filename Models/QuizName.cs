@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudyTogether.Models
 {
-    class Paskaita
+    class QuizName
     {
         public string Name { get; set; }
         public int Value { get; set; }

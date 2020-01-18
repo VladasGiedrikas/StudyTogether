@@ -1,16 +1,9 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using StudyTogether.Forms;
+﻿using StudyTogether.Forms;
 using StudyTogether.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 using System.Windows.Forms;
 
 namespace StudyTogether
@@ -18,45 +11,81 @@ namespace StudyTogether
     public partial class Dashboard : Form
     {
         #region Properties
-        private string FilePath;
-        private long? ImportId;
-        List<QuestionList> rows;
+        static readonly HttpClient client = new HttpClient();
+        readonly CommonThings common = new CommonThings();
+        readonly Student student;
+        List<Question> rows;
+        private readonly QuestionsClient serviceQuestion;
+        private readonly QuizClient serviceQuiz;
         #endregion
-        public Dashboard()
+        public Dashboard(Student student)
         {
-            InitializeComponent();    
-            SeedData();
+            serviceQuestion = new QuestionsClient("https://localhost:44353/", client);
+            serviceQuiz = new QuizClient("https://localhost:44353/", client);
+            InitializeComponent();
+            this.student = student;  
+            LoadData();         
         }
 
-        private void SeedData()
+        private void LoadData()
         {
+            dg.Columns[0].Visible = false;
+            labelTestName.Visible = false;
+            textBoxQuizName.Enabled = false;
 
-            var dataSourcePaskaita = new List<Paskaita>();
-            dataSourcePaskaita.Add(new Paskaita() { Name = "Objectinis", Value = 1 });
-            dataSourcePaskaita.Add(new Paskaita() { Name = "Matematika", Value = 2 });
-            dataSourcePaskaita.Add(new Paskaita() { Name = "Vadyba", Value = 3 });
+            var quizes = serviceQuiz.GetQuizByIdAsync(student.StudentNumber).GetAwaiter().GetResult().ToList();
+            var quizNames = new List<QuizName>();
+
+            foreach (var item in quizes)
+            {
+                var quizName = new QuizName() { Name = item.QuizName, Value = item.QuizNumber };
+                quizNames.Add(quizName);
+            }
 
             //Setup data binding
-            PaskaitacomboBox.DataSource = dataSourcePaskaita;
+            PaskaitacomboBox.DataSource = quizNames;
             PaskaitacomboBox.DisplayMember = "Name";
             PaskaitacomboBox.ValueMember = "Value";
 
-            ////////////////////////////////
-            var dataSourceQuiz = new List<Quiz>();
-            dataSourceQuiz.Add(new Quiz() { QuizId = 1, QuizName = "quiz1", Course = "Objektinis", Owner = "Vladas" });
-            dataSourceQuiz.Add(new Quiz() { QuizId = 2, QuizName = "quiz2", Course = "Vadyba", Owner = "Tomas" });
-            dataSourceQuiz.Add(new Quiz() { QuizId = 3, QuizName = "quiz3", Course = "Matematika", Owner = "Vladas" });
-
-            dataGridView1.DataSource = dataSourceQuiz;
-
+            GetQuestions(quizes.FirstOrDefault().QuizNumber);
+            bnds.DataSource = rows;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DoQuiz frm = new DoQuiz(rows);
+            AllQuizes frm = new AllQuizes();
             frm.ShowDialog();
         }
+        private void LoadQuestionsBtn_Click(object sender, EventArgs e)
+        {
+            labelTestName.Visible = true;
+            textBoxQuizName.Enabled = true;
+            LoadQuestionsFromFile();
+        }
+       
+        private void SaveQuestions(List<Question> rows)
+        {
+            Quiz quiz = new Quiz() {QuizNumber = rows.FirstOrDefault().QuizNumber, QuizName = textBoxQuizName.Text, StudentNumber = student.StudentNumber, Owner = student.StudentName};
+            var result = serviceQuestion.InsertQuestionAsync(rows).GetAwaiter().GetResult();
 
+            if (result)
+            {
+                MessageBox.Show("Išsaugota!");
+            }
+            if (result)
+            {
+               serviceQuestion.InsertQuizAsync(quiz).GetAwaiter().GetResult();
+            }
+        }
+
+        private void exportQuestionsbtn_Click(object sender, EventArgs e)
+        {
+            if (dg.Rows == null || dg.Rows.Count == 0)
+                return;          
+            this.dg.CurrentCell = null;
+            bnds.EndEdit();
+            SaveQuestions(rows);
+        }
 
         private void LoadQuestionsFromFile()
         {
@@ -65,90 +94,62 @@ namespace StudyTogether
             openFileDialog.InitialDirectory = Environment.SpecialFolder.Desktop.ToString();
             if (openFileDialog.ShowDialog() != DialogResult.OK)
                 return;
-
-            FilePath = openFileDialog.FileName;
             OpenCsvFile(openFileDialog.FileName);
         }
 
         private void OpenCsvFile(string filePath)
         {
-            bnds.Clear();
-            rows = CSVToModel<List<QuestionList>>(filePath, ',');
-            bnds.DataSource = rows;            
-        }
-        public T CSVToModel<T>(string filePath, char seperator)
-        {
-            string lines = File.ReadAllText(filePath);
-
-            return CSVToModelFromString<T>(lines, seperator);
-        }
-        public T CSVToModelFromString<T>(string fileContent, char seperator)
-        {
-            JArray array = new JArray();
             try
             {
-                fileContent = System.Text.RegularExpressions.Regex.Replace(fileContent, @"\r\n?|\n", "\r");
-                string[] lines = fileContent.Split('\r');
-                string[] objProperties = GetCSVHeader(seperator, lines[0]);
-
-                for (int i = 1; i < lines.Length; i++)
-                {
-                    if (string.IsNullOrWhiteSpace(lines[i]))
-                        continue;
-                    JObject obj = new JObject();
-                    string[] values = lines[i].Split(seperator);
-
-                    for (int j = 0; j < values.Length; j++)
-                    {
-
-                        obj.Add(objProperties[j], values[j]);
-                    }
-
-                    array.Add(obj);
-                }
+                bnds.Clear();
+                rows = common.CSVToModel<List<Question>>(filePath, ',');
+                bnds.DataSource = rows;
             }
             catch (Exception ex)
             {
-                
+               MessageBox.Show(ex.ToString());
+            }         
+        }
+        private void GetQuestions(int quizNumber)
+        {
+            try
+            {          
+                var result = serviceQuestion.GetQuestionByIdAsync(quizNumber).GetAwaiter().GetResult();
+                rows = result.ToList();
+                bnds.DataSource = rows;
+                dg.Refresh();
             }
-
-            return JsonConvert.DeserializeObject<T>(array.ToString());
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
-        private string[] GetCSVHeader(char seperator, string line)
+        private void PaskaitacomboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            return line.Split(seperator);
+            int id = Convert.ToInt32(PaskaitacomboBox.SelectedValue);
+            GetQuestions(id);
         }
 
-        private void LoadQuestionsBtn_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
-            LoadQuestionsFromFile();
+            labelTestName.Visible =  true;
+            textBoxQuizName.Enabled = true;
+            bnds.Clear();
+            bnds.AddNew();
+            buttonAddRow.Visible = true;         
         }
-        private void ImportQuestions(bool isCheckingOnly)
+
+        private void buttonAddRow_Click(object sender, EventArgs e)
         {
-            if (dg.Rows == null || dg.Rows.Count == 0)
-                return;
+            bnds.AddNew();
+        }
 
-            Cursor.Current = Cursors.WaitCursor;
-
-            //this.dg.DisplayLayout.Bands[0].Columns["Result"].Hidden = false;
-
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
             this.dg.CurrentCell = null;
             bnds.EndEdit();
-            try
-            {
-                List<QuestionList> entries = (List<QuestionList>)bnds.DataSource;
-               
-            }
-            catch (Exception ex)
-            {
-                //sf.Logs.ErrorNotification(ex);
-            }
-            Cursor.Current = Cursors.Default;
-        }
-
-        private void exportQuestionsbtn_Click(object sender, EventArgs e)
-        {
-            ImportQuestions(false);
+            List<Question> entries = (List<Question>)bnds.DataSource;
+            serviceQuestion.UpdateQuestionsListAsync(entries).GetAwaiter().GetResult();
         }
     }
 }

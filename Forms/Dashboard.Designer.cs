@@ -31,32 +31,38 @@
             this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.PaskaitacomboBox = new System.Windows.Forms.ComboBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.dg = new System.Windows.Forms.DataGridView();
             this.LoadQuestionsBtn = new System.Windows.Forms.Button();
             this.exportQuestionsbtn = new System.Windows.Forms.Button();
-            this.questionIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
+            this.buttonEdit = new System.Windows.Forms.Button();
+            this.buttonCreateNew = new System.Windows.Forms.Button();
+            this.buttonAddRow = new System.Windows.Forms.Button();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.questionNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.questionMainDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.corectAnswerDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.incorectFirstDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.incorectSecondDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.incorectThirdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.hintDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.quizNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bnds = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.textBoxQuizName = new System.Windows.Forms.TextBox();
+            this.labelTestName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bnds)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1193, 150);
+            this.button1.Location = new System.Drawing.Point(54, 36);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(155, 59);
             this.button1.TabIndex = 0;
-            this.button1.Text = "Start the Quiz";
+            this.button1.Text = "Rodyti visus Testus";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -64,20 +70,11 @@
             // 
             this.PaskaitacomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PaskaitacomboBox.FormattingEnabled = true;
-            this.PaskaitacomboBox.Location = new System.Drawing.Point(116, 12);
+            this.PaskaitacomboBox.Location = new System.Drawing.Point(177, 201);
             this.PaskaitacomboBox.Name = "PaskaitacomboBox";
             this.PaskaitacomboBox.Size = new System.Drawing.Size(257, 24);
             this.PaskaitacomboBox.TabIndex = 1;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(448, 5);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(538, 204);
-            this.dataGridView1.TabIndex = 2;
+            this.PaskaitacomboBox.SelectionChangeCommitted += new System.EventHandler(this.PaskaitacomboBox_SelectionChangeCommitted);
             // 
             // openFileDialog
             // 
@@ -88,13 +85,15 @@
             this.dg.AutoGenerateColumns = false;
             this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.questionIdDataGridViewTextBoxColumn,
+            this.dataGridViewTextBoxColumn1,
+            this.questionNumberDataGridViewTextBoxColumn,
             this.questionMainDataGridViewTextBoxColumn,
             this.corectAnswerDataGridViewTextBoxColumn,
             this.incorectFirstDataGridViewTextBoxColumn,
             this.incorectSecondDataGridViewTextBoxColumn,
             this.incorectThirdDataGridViewTextBoxColumn,
-            this.hintDataGridViewTextBoxColumn});
+            this.hintDataGridViewTextBoxColumn,
+            this.quizNumberDataGridViewTextBoxColumn});
             this.dg.DataSource = this.bnds;
             this.dg.Location = new System.Drawing.Point(26, 258);
             this.dg.Name = "dg";
@@ -105,31 +104,79 @@
             // 
             // LoadQuestionsBtn
             // 
-            this.LoadQuestionsBtn.Location = new System.Drawing.Point(1193, 672);
+            this.LoadQuestionsBtn.Location = new System.Drawing.Point(925, 679);
             this.LoadQuestionsBtn.Name = "LoadQuestionsBtn";
             this.LoadQuestionsBtn.Size = new System.Drawing.Size(187, 62);
             this.LoadQuestionsBtn.TabIndex = 5;
-            this.LoadQuestionsBtn.Text = "Load Questions From File";
+            this.LoadQuestionsBtn.Text = "Įkelti naują testą iš failo";
             this.LoadQuestionsBtn.UseVisualStyleBackColor = true;
             this.LoadQuestionsBtn.Click += new System.EventHandler(this.LoadQuestionsBtn_Click);
             // 
             // exportQuestionsbtn
             // 
-            this.exportQuestionsbtn.Location = new System.Drawing.Point(764, 672);
+            this.exportQuestionsbtn.Location = new System.Drawing.Point(1205, 679);
             this.exportQuestionsbtn.Name = "exportQuestionsbtn";
             this.exportQuestionsbtn.Size = new System.Drawing.Size(175, 62);
             this.exportQuestionsbtn.TabIndex = 6;
-            this.exportQuestionsbtn.Text = "Export to database";
+            this.exportQuestionsbtn.Text = "Išsaugoti duonbazėje";
             this.exportQuestionsbtn.UseVisualStyleBackColor = true;
             this.exportQuestionsbtn.Click += new System.EventHandler(this.exportQuestionsbtn_Click);
             // 
-            // questionIdDataGridViewTextBoxColumn
+            // label1
             // 
-            this.questionIdDataGridViewTextBoxColumn.DataPropertyName = "QuestionId";
-            this.questionIdDataGridViewTextBoxColumn.HeaderText = "QuestionId";
-            this.questionIdDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.questionIdDataGridViewTextBoxColumn.Name = "questionIdDataGridViewTextBoxColumn";
-            this.questionIdDataGridViewTextBoxColumn.Width = 125;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(23, 208);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(86, 17);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Mano Testai";
+            // 
+            // buttonEdit
+            // 
+            this.buttonEdit.Location = new System.Drawing.Point(26, 679);
+            this.buttonEdit.Name = "buttonEdit";
+            this.buttonEdit.Size = new System.Drawing.Size(170, 62);
+            this.buttonEdit.TabIndex = 9;
+            this.buttonEdit.Text = "Redaguoti";
+            this.buttonEdit.UseVisualStyleBackColor = true;
+            this.buttonEdit.Click += new System.EventHandler(this.buttonEdit_Click);
+            // 
+            // buttonCreateNew
+            // 
+            this.buttonCreateNew.Location = new System.Drawing.Point(245, 679);
+            this.buttonCreateNew.Name = "buttonCreateNew";
+            this.buttonCreateNew.Size = new System.Drawing.Size(160, 62);
+            this.buttonCreateNew.TabIndex = 10;
+            this.buttonCreateNew.Text = "Sukurti naują testą";
+            this.buttonCreateNew.UseVisualStyleBackColor = true;
+            this.buttonCreateNew.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // buttonAddRow
+            // 
+            this.buttonAddRow.Location = new System.Drawing.Point(436, 712);
+            this.buttonAddRow.Name = "buttonAddRow";
+            this.buttonAddRow.Size = new System.Drawing.Size(195, 29);
+            this.buttonAddRow.TabIndex = 11;
+            this.buttonAddRow.Text = "Prideti dar vieną eilutę";
+            this.buttonAddRow.UseVisualStyleBackColor = true;
+            this.buttonAddRow.Visible = false;
+            this.buttonAddRow.Click += new System.EventHandler(this.buttonAddRow_Click);
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "QuestionId";
+            this.dataGridViewTextBoxColumn1.HeaderText = "QuestionId";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Width = 125;
+            // 
+            // questionNumberDataGridViewTextBoxColumn
+            // 
+            this.questionNumberDataGridViewTextBoxColumn.DataPropertyName = "QuestionNumber";
+            this.questionNumberDataGridViewTextBoxColumn.HeaderText = "QuestionNumber";
+            this.questionNumberDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.questionNumberDataGridViewTextBoxColumn.Name = "questionNumberDataGridViewTextBoxColumn";
+            this.questionNumberDataGridViewTextBoxColumn.Width = 125;
             // 
             // questionMainDataGridViewTextBoxColumn
             // 
@@ -179,28 +226,57 @@
             this.hintDataGridViewTextBoxColumn.Name = "hintDataGridViewTextBoxColumn";
             this.hintDataGridViewTextBoxColumn.Width = 125;
             // 
+            // quizNumberDataGridViewTextBoxColumn
+            // 
+            this.quizNumberDataGridViewTextBoxColumn.DataPropertyName = "QuizNumber";
+            this.quizNumberDataGridViewTextBoxColumn.HeaderText = "QuizNumber";
+            this.quizNumberDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.quizNumberDataGridViewTextBoxColumn.Name = "quizNumberDataGridViewTextBoxColumn";
+            this.quizNumberDataGridViewTextBoxColumn.Width = 125;
+            // 
             // bnds
             // 
-            this.bnds.DataSource = typeof(StudyTogether.Models.QuestionList);
+            this.bnds.DataSource = typeof(StudyTogether.Models.Question);
+            // 
+            // textBoxQuizName
+            // 
+            this.textBoxQuizName.Location = new System.Drawing.Point(718, 715);
+            this.textBoxQuizName.Name = "textBoxQuizName";
+            this.textBoxQuizName.Size = new System.Drawing.Size(190, 22);
+            this.textBoxQuizName.TabIndex = 12;
+            // 
+            // labelTestName
+            // 
+            this.labelTestName.AutoSize = true;
+            this.labelTestName.Location = new System.Drawing.Point(733, 689);
+            this.labelTestName.Name = "labelTestName";
+            this.labelTestName.Size = new System.Drawing.Size(159, 21);
+            this.labelTestName.TabIndex = 13;
+            this.labelTestName.Text = "Testo pavadinimas";
             // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1478, 753);
+            this.Controls.Add(this.labelTestName);
+            this.Controls.Add(this.textBoxQuizName);
+            this.Controls.Add(this.buttonAddRow);
+            this.Controls.Add(this.buttonCreateNew);
+            this.Controls.Add(this.buttonEdit);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.exportQuestionsbtn);
             this.Controls.Add(this.LoadQuestionsBtn);
             this.Controls.Add(this.dg);
-            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.PaskaitacomboBox);
             this.Controls.Add(this.button1);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Dashboard";
             this.Text = "Form2";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bnds)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -208,19 +284,27 @@
 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox PaskaitacomboBox;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.BindingSource bnds;
         private System.Windows.Forms.DataGridView dg;
         private System.Windows.Forms.DataGridViewTextBoxColumn questionDataGridViewTextBoxColumn;
         private System.Windows.Forms.Button LoadQuestionsBtn;
         private System.Windows.Forms.DataGridViewTextBoxColumn questionIdDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button exportQuestionsbtn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn questionNumberDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn questionMainDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn corectAnswerDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn incorectFirstDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn incorectSecondDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn incorectThirdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn hintDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Button exportQuestionsbtn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn quizNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonEdit;
+        private System.Windows.Forms.Button buttonCreateNew;
+        private System.Windows.Forms.Button buttonAddRow;
+        private System.Windows.Forms.TextBox textBoxQuizName;
+        private System.Windows.Forms.Label labelTestName;
     }
 }
