@@ -1,16 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace StudyTogether
 {
-   public class CommonThings
+    public class CommonThings
     {
         public T CSVToModel<T>(string filePath, char seperator)
         {
@@ -47,7 +42,6 @@ namespace StudyTogether
             {
 
             }
-
             return JsonConvert.DeserializeObject<T>(array.ToString());
         }
         private string[] GetCSVHeader(char seperator, string line)

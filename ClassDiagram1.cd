@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="StudyTogether.CommonThings" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAEAAAAAAIAAAAAAA=</HashCode>
+      <FileName>CommonThings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.Dashboard">
+    <Position X="4.75" Y="5.25" Width="1.75" />
+    <Members>
+      <Field Name="bnds" Hidden="true" />
+      <Field Name="button1" Hidden="true" />
+      <Field Name="buttonAddRow" Hidden="true" />
+      <Field Name="buttonCreateNew" Hidden="true" />
+      <Field Name="buttonEdit" Hidden="true" />
+      <Field Name="components" Hidden="true" />
+      <Field Name="corectAnswerDataGridViewTextBoxColumn" Hidden="true" />
+      <Field Name="dataGridViewTextBoxColumn1" Hidden="true" />
+      <Field Name="dg" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Field Name="exportQuestionsbtn" Hidden="true" />
+      <Field Name="hintDataGridViewTextBoxColumn" Hidden="true" />
+      <Field Name="incorectFirstDataGridViewTextBoxColumn" Hidden="true" />
+      <Field Name="incorectSecondDataGridViewTextBoxColumn" Hidden="true" />
+      <Field Name="incorectThirdDataGridViewTextBoxColumn" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="label1" Hidden="true" />
+      <Field Name="labelTestName" Hidden="true" />
+      <Field Name="LoadQuestionsBtn" Hidden="true" />
+      <Field Name="openFileDialog" Hidden="true" />
+      <Field Name="PaskaitacomboBox" Hidden="true" />
+      <Field Name="questionDataGridViewTextBoxColumn" Hidden="true" />
+      <Field Name="questionIdDataGridViewTextBoxColumn" Hidden="true" />
+      <Field Name="questionMainDataGridViewTextBoxColumn" Hidden="true" />
+      <Field Name="questionNumberDataGridViewTextBoxColumn" Hidden="true" />
+      <Field Name="quizNumberDataGridViewTextBoxColumn" Hidden="true" />
+      <Field Name="textBoxQuizName" Hidden="true" />
+    </Members>
+    <AssociationLine Name="QuizName" Type="StudyTogether.Models.QuizName" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.5" Y="9.731" />
+        <Point X="6.875" Y="9.731" />
+        <Point X="6.875" Y="8.148" />
+        <Point X="11" Y="8.148" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Student" Type="StudyTogether.Models.Student" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.75" Y="7.25" />
+        <Point X="3.281" Y="7.25" />
+        <Point X="3.281" Y="2.565" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>0gBgAABQQDBwylAiEADgQAAGYABIAAAAEFIABIQAAgA=</HashCode>
+      <FileName>Forms\Dashboard.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="QuizName" />
+      <Property Name="Student" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="StudyTogether.Program">
+    <Position X="4.75" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.QuestionsClient">
+    <Position X="11.5" Y="1.5" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="StudyTogether.QuestionsClient.ObjectResponseResult&lt;T&gt;" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>StudyTogetherGenerated.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAEgAAAAAAAAIhBQAoAEAAAAgAAAgAgCIAwAEAAA=</HashCode>
+      <FileName>StudyTogetherGenerated.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.StudentsClient">
+    <Position X="8.5" Y="0.5" Width="2" />
+    <Members>
+      <Method Name="PrepareRequest" Hidden="true" />
+      <Method Name="ProcessResponse" Hidden="true" />
+      <Method Name="UpdateJsonSerializerSettings" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Struct Name="StudyTogether.StudentsClient.ObjectResponseResult&lt;T&gt;" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>StudyTogetherGenerated.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAABAEgAAAAAAAEAhBAAgEAAAEAgAAAgCABIAwAEAAA=</HashCode>
+      <FileName>StudyTogetherGenerated.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.AnswersClient" Collapsed="true">
+    <Position X="13.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAEAEgAAAAAAAgAhBAAgAAAAAIwAAAgAACIAwAEAAA=</HashCode>
+      <FileName>StudyTogetherGenerated.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.QuizClient" Collapsed="true">
+    <Position X="13.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEgAAEgAABAAAABAhBQAgAAAAAAgAAAgAAAIAwAEAAA=</HashCode>
+      <FileName>StudyTogetherGenerated.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.Forms.AllQuizes" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <Members>
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AABgAAAEACAQCAAAAACIQAAGAAQAAAIAEAAABAAgAgA=</HashCode>
+      <FileName>Forms\AllQuizes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.Forms.DoQuiz" Collapsed="true">
+    <Position X="1" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAFAABAoECAAAIAA4CHAAAACAABAAAAABIAAJAEAgIA=</HashCode>
+      <FileName>Forms\DoQuiz.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.Forms.Registration">
+    <Position X="4.75" Y="1.5" Width="1.75" />
+    <Members>
+      <Field Name="components" Hidden="true" />
+      <Field Name="Connect" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Field Name="label1" Hidden="true" />
+      <Field Name="label2" Hidden="true" />
+      <Field Name="label3" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQACAAABAAAACAAIACAAAAAAQAAQAAZAAIACE=</HashCode>
+      <FileName>Forms\Registration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.Models.Answer" Collapsed="true">
+    <Position X="13.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAIAAAAAACiAAAAgAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Models\Answer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.Models.Grade" Collapsed="true">
+    <Position X="1" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAJAAQAAAAgAAAAAAAAAACACAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Models\Grade.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.Models.Question">
+    <Position X="13.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAIAAAAAACAAAAAwAgAAABAAAAAAAgAAAAAAQAAAA=</HashCode>
+      <FileName>Models\Question.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.Models.Quiz" Collapsed="true">
+    <Position X="13.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAIACAAAAAgAAAAIAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Quiz.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.Models.QuizName">
+    <Position X="11" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\QuizName.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudyTogether.Models.Student">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABEAAAAAAgAAAAAAAAAAAAAAAAAACAAgAAAACAAA=</HashCode>
+      <FileName>Models\Student.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

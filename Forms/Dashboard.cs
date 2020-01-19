@@ -27,6 +27,22 @@ namespace StudyTogether
             LoadData();         
         }
 
+        internal QuizName QuizName
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
+        public Student Student
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
         private void LoadData()
         {
             dg.Columns[0].Visible = false;
