@@ -9,36 +9,41 @@ namespace StudyTogether.Forms
 {
     public partial class AllQuizes : Form
     {
-        static readonly HttpClient client = new HttpClient();
-        private readonly QuizClient serviceQuiz;
-        List<Question> questions;
-        int id;
-        public AllQuizes()
+        private readonly ApiClient apiClient = new ApiClient();
+        private  Student student;
+        private List<Question> questions;
+        private int questioId;
+        public AllQuizes(Student student)
         {
-            serviceQuiz = new QuizClient("https://localhost:44353/", client);
+            this.student = student;
             InitializeComponent();
             LoadData();
         }
 
         private void LoadData()
         {
-            var quizzes = serviceQuiz.GetAllQuizesAsync().GetAwaiter().GetResult();
-            bnds.DataSource = quizzes;
+            try
+            {
+                var quizzes = apiClient.QuizService.GetAllQuizesAsync().GetAwaiter().GetResult();
+                bnds.DataSource = quizzes;
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
         {       
             try
             {                 
-                var service = new QuestionsClient("https://localhost:44353/", client);
-                var result = service.GetQuestionByIdAsync(id).GetAwaiter().GetResult();
-                questions = result.ToList();
+                questions = apiClient.QuestionsService.GetQuestionByIdAsync(questioId).GetAwaiter().GetResult().ToList();                
                 if (questions != null)
                 {
-                    DoQuiz frm = new DoQuiz(questions);
-                    frm.ShowDialog();
-                }
-               
+                    DoQuiz frm = new DoQuiz(questions, student);
+                    frm.Show();
+                }             
             }
             catch (Exception ex)
             {
@@ -51,7 +56,7 @@ namespace StudyTogether.Forms
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dg.Rows[e.RowIndex];
-                id = Convert.ToInt32( row.Cells[0].Value.ToString());
+                questioId = Convert.ToInt32( row.Cells[0].Value.ToString());
             }
         }
     }

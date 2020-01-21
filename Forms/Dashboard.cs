@@ -3,7 +3,6 @@ using StudyTogether.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Windows.Forms;
 
 namespace StudyTogether
@@ -11,96 +10,105 @@ namespace StudyTogether
     public partial class Dashboard : Form
     {
         #region Properties
-        static readonly HttpClient client = new HttpClient();
-        readonly CommonThings common = new CommonThings();
-        readonly Student student;
-        List<Question> rows;
-        private readonly QuestionsClient serviceQuestion;
-        private readonly QuizClient serviceQuiz;
+        readonly SharedFunctions sf = new SharedFunctions();
+        private readonly ApiClient apiClient = new ApiClient();
+        private List<Question> questions;
+        private readonly Student student;
         #endregion
         public Dashboard(Student student)
         {
-            serviceQuestion = new QuestionsClient("https://localhost:44353/", client);
-            serviceQuiz = new QuizClient("https://localhost:44353/", client);
             InitializeComponent();
-            this.student = student;  
+            this.student = student;
+            ShowHide();
             LoadData();         
         }
 
-        internal QuizName QuizName
-        {
-            get => default;
-            set
-            {
-            }
-        }
-
-        public Student Student
-        {
-            get => default;
-            set
-            {
-            }
-        }
-
-        private void LoadData()
+        private void ShowHide()
         {
             dg.Columns[0].Visible = false;
             labelTestName.Visible = false;
             textBoxQuizName.Enabled = false;
-
-            var quizes = serviceQuiz.GetQuizByIdAsync(student.StudentNumber).GetAwaiter().GetResult().ToList();
-            var quizNames = new List<QuizName>();
-
-            foreach (var item in quizes)
-            {
-                var quizName = new QuizName() { Name = item.QuizName, Value = item.QuizNumber };
-                quizNames.Add(quizName);
-            }
-
-            //Setup data binding
-            PaskaitacomboBox.DataSource = quizNames;
-            PaskaitacomboBox.DisplayMember = "Name";
-            PaskaitacomboBox.ValueMember = "Value";
-
-            GetQuestions(quizes.FirstOrDefault().QuizNumber);
-            bnds.DataSource = rows;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void LoadData()
         {
-            AllQuizes frm = new AllQuizes();
-            frm.ShowDialog();
+            //gaunama prisijungusio studento sukurtu testu pavadinimus iš API
+            // ir juos sudedam i dropdow laukelį
+            try
+            {
+                var quizes = apiClient.QuizService.GetQuizByIdAsync(student.StudentNumber).GetAwaiter().GetResult().ToList();
+                var quizNames = new List<QuizName>();
+                foreach (var item in quizes)
+                {
+                    var quizName = new QuizName() { Name = item.QuizName, Value = item.QuizNumber };
+                    quizNames.Add(quizName);
+                }
+                PaskaitacomboBox.DataSource = quizNames;
+                PaskaitacomboBox.DisplayMember = "Name";
+                PaskaitacomboBox.ValueMember = "Value";
+                GetQuestions(quizes.FirstOrDefault().QuizNumber);
+                bnds.DataSource = questions;
+            }
+            catch (Exception ex)
+            {
+
+               MessageBox.Show(ex.ToString());
+            }         
         }
+
         private void LoadQuestionsBtn_Click(object sender, EventArgs e)
         {
             labelTestName.Visible = true;
             textBoxQuizName.Enabled = true;
             LoadQuestionsFromFile();
         }
-       
+
         private void SaveQuestions(List<Question> rows)
         {
-            Quiz quiz = new Quiz() {QuizNumber = rows.FirstOrDefault().QuizNumber, QuizName = textBoxQuizName.Text, StudentNumber = student.StudentNumber, Owner = student.StudentName};
-            var result = serviceQuestion.InsertQuestionAsync(rows).GetAwaiter().GetResult();
+            if (!string.IsNullOrWhiteSpace(textBoxQuizName.Text))
+            {
+                try
+                {
+                    var result = apiClient.QuestionsService.InsertQuestionAsync(rows).GetAwaiter().GetResult();
 
-            if (result)
-            {
-                MessageBox.Show("Išsaugota!");
+                    if (result)
+                    {
+                        MessageBox.Show("Išsaugota!");
+                    }
+                    if (result)
+                    {
+                        Quiz quiz = new Quiz()
+                        {
+                            QuizNumber = rows.FirstOrDefault().QuizNumber,
+                            QuizName = textBoxQuizName.Text,
+                            StudentNumber = student.StudentNumber,
+                            Owner = student.StudentName
+                        };
+                        apiClient.QuestionsService.InsertQuizAsync(quiz).GetAwaiter().GetResult();
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.ToString());
+                }
+
             }
-            if (result)
+            else
             {
-               serviceQuestion.InsertQuizAsync(quiz).GetAwaiter().GetResult();
+                MessageBox.Show("Iveskite pavadinimą");
+                return;
             }
         }
 
-        private void exportQuestionsbtn_Click(object sender, EventArgs e)
+        private void ExportQuestionsbtn_Click(object sender, EventArgs e)
         {
             if (dg.Rows == null || dg.Rows.Count == 0)
                 return;          
             this.dg.CurrentCell = null;
             bnds.EndEdit();
-            SaveQuestions(rows);
+            SaveQuestions(questions);
+            LoadData();
         }
 
         private void LoadQuestionsFromFile()
@@ -118,8 +126,10 @@ namespace StudyTogether
             try
             {
                 bnds.Clear();
-                rows = common.CSVToModel<List<Question>>(filePath, ',');
-                bnds.DataSource = rows;
+
+                questions = sf.CSVToModel<List<Question>>(filePath, ',');
+
+                bnds.DataSource = questions;
             }
             catch (Exception ex)
             {
@@ -130,9 +140,9 @@ namespace StudyTogether
         {
             try
             {          
-                var result = serviceQuestion.GetQuestionByIdAsync(quizNumber).GetAwaiter().GetResult();
-                rows = result.ToList();
-                bnds.DataSource = rows;
+                var result = apiClient.QuestionsService.GetQuestionByIdAsync(quizNumber).GetAwaiter().GetResult();
+                questions = result.ToList();
+                bnds.DataSource = questions;
                 dg.Refresh();
             }
             catch (Exception ex)
@@ -146,26 +156,40 @@ namespace StudyTogether
             GetQuestions(id);
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            labelTestName.Visible =  true;
-            textBoxQuizName.Enabled = true;
-            bnds.Clear();
-            bnds.AddNew();
-            buttonAddRow.Visible = true;         
-        }
-
-        private void buttonAddRow_Click(object sender, EventArgs e)
+        private void ButtonAddRow_Click(object sender, EventArgs e)
         {
             bnds.AddNew();
         }
 
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            this.dg.CurrentCell = null;
-            bnds.EndEdit();
-            List<Question> entries = (List<Question>)bnds.DataSource;
-            serviceQuestion.UpdateQuestionsListAsync(entries).GetAwaiter().GetResult();
+            try
+            {
+                this.dg.CurrentCell = null;
+                bnds.EndEdit();
+                List<Question> entries = (List<Question>)bnds.DataSource;
+                apiClient.QuestionsService.UpdateQuestionsListAsync(entries).GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void ShowAllQuiz_Click(object sender, EventArgs e)
+        {
+            AllQuizes frm = new AllQuizes(student);
+            frm.ShowDialog();
+        }
+
+        private void ButtonCreatenew(object sender, EventArgs e)
+        {
+            labelTestName.Visible = true;
+            textBoxQuizName.Enabled = true;
+            bnds.Clear();
+            bnds.AddNew();
+            buttonAddRow.Visible = true;
         }
     }
 }

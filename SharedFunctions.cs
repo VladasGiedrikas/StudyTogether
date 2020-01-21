@@ -2,10 +2,11 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
+using System.Windows.Forms;
 
 namespace StudyTogether
-{
-    public class CommonThings
+{ 
+    public class SharedFunctions
     {
         public T CSVToModel<T>(string filePath, char seperator)
         {
@@ -40,7 +41,7 @@ namespace StudyTogether
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show(ex.ToString());
             }
             return JsonConvert.DeserializeObject<T>(array.ToString());
         }

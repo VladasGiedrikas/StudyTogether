@@ -6,17 +6,16 @@ namespace StudyTogether
 {
     static class Program
     {
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
-           // RegisterServices();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Registration());
+            //paleidzimas pradinis langas
         }
     }
 }
