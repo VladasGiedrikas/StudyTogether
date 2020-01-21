@@ -10,7 +10,7 @@ namespace StudyTogether
     public partial class Dashboard : Form
     {
         #region Properties
-        readonly SharedFunctions sf = new SharedFunctions();
+        private SharedFunctions sf = new SharedFunctions();
         private readonly ApiClient apiClient = new ApiClient();
         private List<Question> questions;
         private readonly Student student;
@@ -23,17 +23,11 @@ namespace StudyTogether
             LoadData();         
         }
 
-        private void ShowHide()
-        {
-            dg.Columns[0].Visible = false;
-            labelTestName.Visible = false;
-            textBoxQuizName.Enabled = false;
-        }
-
+     
         private void LoadData()
         {
             //gaunama prisijungusio studento sukurtu testu pavadinimus iš API
-            // ir juos sudedam i dropdow laukelį
+            // ir juos sudedam i dropdow sąrašo laukelį
             try
             {
                 var quizes = apiClient.QuizService.GetQuizByIdAsync(student.StudentNumber).GetAwaiter().GetResult().ToList();
@@ -55,7 +49,7 @@ namespace StudyTogether
                MessageBox.Show(ex.ToString());
             }         
         }
-
+        //kviečiamas metodas failui pasirinkti
         private void LoadQuestionsBtn_Click(object sender, EventArgs e)
         {
             labelTestName.Visible = true;
@@ -63,6 +57,7 @@ namespace StudyTogether
             LoadQuestionsFromFile();
         }
 
+        //išsaugomi klausimai
         private void SaveQuestions(List<Question> rows)
         {
             if (!string.IsNullOrWhiteSpace(textBoxQuizName.Text))
@@ -84,6 +79,7 @@ namespace StudyTogether
                             StudentNumber = student.StudentNumber,
                             Owner = student.StudentName
                         };
+                        // išsaugomas testo pavadinimas, jei sekmingai išsaugomi klausimai
                         apiClient.QuestionsService.InsertQuizAsync(quiz).GetAwaiter().GetResult();
                     }
                 }
@@ -101,6 +97,7 @@ namespace StudyTogether
             }
         }
 
+        //paruosiami duomenys iš grido išsaugojimui ir kviečiamas metodas išsaugoti
         private void ExportQuestionsbtn_Click(object sender, EventArgs e)
         {
             if (dg.Rows == null || dg.Rows.Count == 0)
@@ -111,6 +108,7 @@ namespace StudyTogether
             LoadData();
         }
 
+        //įkeliami failai iš .csv failo
         private void LoadQuestionsFromFile()
         {
             openFileDialog.Multiselect = false;
@@ -126,7 +124,7 @@ namespace StudyTogether
             try
             {
                 bnds.Clear();
-
+                // sharedFunction klasėje esantys metodai apdoroja failą ir gražina duomenys nurodytu formatu 
                 questions = sf.CSVToModel<List<Question>>(filePath, ',');
 
                 bnds.DataSource = questions;
@@ -136,6 +134,7 @@ namespace StudyTogether
                MessageBox.Show(ex.ToString());
             }         
         }
+        //kvieciamas Api metodas, kuris gražina klausimas pagal nurodyta testo pavadinimą
         private void GetQuestions(int quizNumber)
         {
             try
@@ -150,17 +149,29 @@ namespace StudyTogether
                 MessageBox.Show(ex.ToString());
             }
         }
+        //paslepima textbox ir labels
+        private void ShowHide()
+        {
+            dg.Columns[0].Visible = false;
+            labelTestName.Visible = false;
+            textBoxQuizName.Enabled = false;
+        }
+
+        #region events
+        // iventas kviecia metoda gauti klausimus ir paduoda pasirinkta pavadinimo numeri
         private void PaskaitacomboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
             int id = Convert.ToInt32(PaskaitacomboBox.SelectedValue);
             GetQuestions(id);
         }
 
+        //prideda nauja eilute gride naujų klausimų kurimui
         private void ButtonAddRow_Click(object sender, EventArgs e)
         {
             bnds.AddNew();
         }
 
+        // kviečiamas Api kur išsaugomi pakeitimai padaryt paredagavus gridą
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             try
@@ -177,12 +188,14 @@ namespace StudyTogether
             }
         }
 
+        // naujo lango atidarymas
         private void ShowAllQuiz_Click(object sender, EventArgs e)
         {
             AllQuizes frm = new AllQuizes(student);
             frm.ShowDialog();
         }
 
+        // išvalomas gridas ir paruošiamas naujiems klausimams kurti
         private void ButtonCreatenew(object sender, EventArgs e)
         {
             labelTestName.Visible = true;
@@ -191,5 +204,7 @@ namespace StudyTogether
             bnds.AddNew();
             buttonAddRow.Visible = true;
         }
+
+        #endregion
     }
 }

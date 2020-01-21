@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Windows.Forms;
 
 namespace StudyTogether.Forms
@@ -20,6 +19,7 @@ namespace StudyTogether.Forms
             LoadData();
         }
 
+        //Užkraunami duomenys gauti iš API
         private void LoadData()
         {
             try
@@ -34,6 +34,7 @@ namespace StudyTogether.Forms
             }
         }
 
+        //gaunami klausimai iš Api pagal testoId 
         private void buttonStart_Click(object sender, EventArgs e)
         {       
             try
@@ -41,6 +42,7 @@ namespace StudyTogether.Forms
                 questions = apiClient.QuestionsService.GetQuestionByIdAsync(questioId).GetAwaiter().GetResult().ToList();                
                 if (questions != null)
                 {
+                    //atidaroma naujas langas ir perduodami klausimai ir prisijungusio studento informacija
                     DoQuiz frm = new DoQuiz(questions, student);
                     frm.Show();
                 }             
@@ -51,6 +53,7 @@ namespace StudyTogether.Forms
             }
         }
 
+        //gaunas pasirinkto testo numeris
         private void dg_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex >= 0)
