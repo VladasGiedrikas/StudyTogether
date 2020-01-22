@@ -15,8 +15,6 @@ namespace StudyTogether.Forms
 
         private void Connect_Click(object sender, EventArgs e)
         {
-            nameBox.Text = "test";
-            paswordBox.Text = "test123";
             var student = apiClient.StudentService.GetStudentCheckAsync(nameBox.Text, paswordBox.Text).GetAwaiter().GetResult();
 
             if (student != null)

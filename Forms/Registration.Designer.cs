@@ -38,18 +38,20 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxGroup = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // nameBox
             // 
-            this.nameBox.Location = new System.Drawing.Point(73, 81);
+            this.nameBox.Location = new System.Drawing.Point(77, 161);
             this.nameBox.Name = "nameBox";
             this.nameBox.Size = new System.Drawing.Size(141, 22);
             this.nameBox.TabIndex = 0;
             // 
             // Connect
             // 
-            this.Connect.Location = new System.Drawing.Point(73, 200);
+            this.Connect.Location = new System.Drawing.Point(77, 291);
             this.Connect.Name = "Connect";
             this.Connect.Size = new System.Drawing.Size(115, 26);
             this.Connect.TabIndex = 2;
@@ -69,7 +71,7 @@
             // 
             // paswordBox
             // 
-            this.paswordBox.Location = new System.Drawing.Point(73, 130);
+            this.paswordBox.Location = new System.Drawing.Point(77, 230);
             this.paswordBox.Name = "paswordBox";
             this.paswordBox.Size = new System.Drawing.Size(141, 22);
             this.paswordBox.TabIndex = 4;
@@ -93,7 +95,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(369, 124);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 21);
+            this.label1.Size = new System.Drawing.Size(53, 17);
             this.label1.TabIndex = 8;
             this.label1.Text = "Vardas";
             // 
@@ -102,7 +104,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(369, 177);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 21);
+            this.label2.Size = new System.Drawing.Size(48, 17);
             this.label2.TabIndex = 9;
             this.label2.Text = "Grupe";
             // 
@@ -122,11 +124,31 @@
             this.textBoxGroup.Size = new System.Drawing.Size(188, 22);
             this.textBoxGroup.TabIndex = 11;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(74, 129);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(112, 17);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Vartotojo vardas";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(74, 210);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(81, 17);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Slaptažodis";
+            // 
             // Registration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxGroup);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -156,5 +178,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxGroup;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }

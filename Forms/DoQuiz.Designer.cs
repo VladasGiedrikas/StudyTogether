@@ -62,7 +62,6 @@
             this.answer1.TabStop = true;
             this.answer1.Text = "Answer";
             this.answer1.UseVisualStyleBackColor = true;
-            this.answer1.CheckedChanged += new System.EventHandler(this.Answer_CheckedChanged);
             // 
             // answer2
             // 
@@ -74,7 +73,6 @@
             this.answer2.TabStop = true;
             this.answer2.Text = "Answer";
             this.answer2.UseVisualStyleBackColor = true;
-            this.answer2.CheckedChanged += new System.EventHandler(this.Answer_CheckedChanged);
             // 
             // labelQuestion
             // 
@@ -95,7 +93,6 @@
             this.answer3.TabStop = true;
             this.answer3.Text = "Answer";
             this.answer3.UseVisualStyleBackColor = true;
-            this.answer3.CheckedChanged += new System.EventHandler(this.Answer_CheckedChanged);
             // 
             // hintLabel
             // 
@@ -136,7 +133,6 @@
             this.answer4.TabStop = true;
             this.answer4.Text = "Answer";
             this.answer4.UseVisualStyleBackColor = true;
-            this.answer4.CheckedChanged += new System.EventHandler(this.Answer_CheckedChanged);
             // 
             // labelFinish
             // 

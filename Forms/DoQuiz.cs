@@ -37,7 +37,7 @@ namespace StudyTogether.Forms
         {
             foreach (var item in questions)
             {
-                var answer = new Answer() { QuestionNumber = item.QuestionNumber, StudentAnswer = "" };
+                var answer = new Answer() { QuestionNumber = item.QuestionNumber, StudentAnswer = "", CorectAnswer = item.CorectAnswer };
                 answers.Add(answer);
             }
         }
@@ -72,8 +72,29 @@ namespace StudyTogether.Forms
         //perėjimas prie sekančio klausimo
         private void NextBtn_Click(object sender, EventArgs e)
         {
+            SaveSelectedAnswer();
             questionId += 1;
+            answer1.Checked  = false;
+            answer2.Checked = false;
+            answer3.Checked = false;
+            answer4.Checked = false;
             ShowQuestion(questionId);
+        }
+
+        private void SaveSelectedAnswer()
+        {
+            //pasikeitus klausimui išsaugomas pasirinkimas
+            string selectedAnswer = "";
+            if (answer1.Checked) selectedAnswer = answer1.Text;
+            if (answer2.Checked) selectedAnswer = answer2.Text;
+            if (answer3.Checked) selectedAnswer = answer3.Text;
+            if (answer4.Checked) selectedAnswer = answer4.Text;
+            var total = questionsList.Count();
+            if (!(questionId > total))
+            {
+                var test = answers.Where(x => x.QuestionNumber == questionId).FirstOrDefault();
+                test.StudentAnswer = selectedAnswer;
+            }
         }
 
         //baigimas testas
@@ -88,22 +109,6 @@ namespace StudyTogether.Forms
             //išsaugom informaciją apie apie atliktą testą
             var inserted = apiClient.GradesService.InsertGradeAsync(grade).GetAwaiter().GetResult();
             LoadData();
-        }
-        //pasikeitus klausimui išsaugomas pasirinkimas
-        private void Answer_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!(questionId > questionsList.Count))
-            {
-                string selectedAnswer = "";
-                if (answer1.Checked) selectedAnswer = answer1.Text;
-                if (answer2.Checked) selectedAnswer = answer2.Text;
-                if (answer3.Checked) selectedAnswer = answer3.Text;
-                if (answer4.Checked) selectedAnswer = answer4.Text;
-
-                var test = answers.Where(x => x.QuestionNumber == questionId).FirstOrDefault();               
-                test.StudentAnswer = selectedAnswer;
-            }
-           
-        }
+        }        
     }
 }
