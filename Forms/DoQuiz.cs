@@ -21,6 +21,7 @@ namespace StudyTogether.Forms
             questionsList = questionLists;
             InitializeComponent();
             PrepareAnswers(questionsList);
+            ShufleButtons();
             ShowQuestion(questionId);
             LoadData();
         }
@@ -43,13 +44,14 @@ namespace StudyTogether.Forms
         }
         //rodomas klausimas pagal jo numeri
         private void ShowQuestion(int questionId)
-        {
+        {          
             var total = questionsList.Count();
             var question = new Question();
             if (!(questionId > total))
             {
                 question = questionsList.Where(x => x.QuestionNumber == questionId).FirstOrDefault();
                 labelQuestion.Text = question.QuestionMain.ToString();
+
                 answer1.Text = question.CorectAnswer.ToString();
                 answer2.Text = question.IncorectFirst.ToString();
                 answer3.Text = question.IncorectSecond.ToString();
@@ -74,11 +76,32 @@ namespace StudyTogether.Forms
         {
             SaveSelectedAnswer();
             questionId += 1;
-            answer1.Checked  = false;
+            answer1.Checked = false;
             answer2.Checked = false;
             answer3.Checked = false;
-            answer4.Checked = false;
+            answer4.Checked = false;           
+            ShufleButtons();
             ShowQuestion(questionId);
+        }
+
+        private void ShufleButtons()
+        {
+            //išmaišom radio buttons padėtį
+            List<int> locations = new List<int> { 161, 201, 244, 282 };
+            var r1 = answer1;
+            var r2 = answer2;
+            var r3 = answer3;
+            var r4 = answer4;
+
+            var buttons = new[] { r1, r2, r3, r4 };
+
+            var rand = new Random();
+            var shuffledButtons = locations.OrderBy(x => rand.Next(locations.Count)).ToList();
+
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                buttons[i].Location = new System.Drawing.Point(500, shuffledButtons[i]);
+            }
         }
 
         private void SaveSelectedAnswer()

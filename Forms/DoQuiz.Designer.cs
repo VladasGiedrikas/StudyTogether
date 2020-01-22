@@ -77,7 +77,7 @@
             // labelQuestion
             // 
             this.labelQuestion.AutoSize = true;
-            this.labelQuestion.Location = new System.Drawing.Point(513, 124);
+            this.labelQuestion.Location = new System.Drawing.Point(622, 161);
             this.labelQuestion.Name = "labelQuestion";
             this.labelQuestion.Size = new System.Drawing.Size(46, 17);
             this.labelQuestion.TabIndex = 3;
@@ -166,7 +166,7 @@
             this.quizNumberDataGridViewTextBoxColumn,
             this.studentNumberDataGridViewTextBoxColumn});
             this.dg.DataSource = this.bnds;
-            this.dg.Location = new System.Drawing.Point(86, 348);
+            this.dg.Location = new System.Drawing.Point(86, 405);
             this.dg.Name = "dg";
             this.dg.RowHeadersWidth = 51;
             this.dg.RowTemplate.Height = 24;
